@@ -1,3 +1,8 @@
+# Ignore all JSON files
+*.json
+# But allow example JSON files - overrides the previous rule to accept *.example.json files
+!*.example.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

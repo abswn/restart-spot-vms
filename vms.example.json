@@ -1,0 +1,28 @@
+{
+  "gcp": [
+    {
+      "project_id": "",
+      "zone": "us-central1-a",
+      "instance_name": "myvm",
+      "credentials_file": "credentials.json",
+      "description": "This is a GCP spot for testing"
+    }
+  ],
+  "aws": [
+    {
+      "api_key": "APIA...",
+      "region": "us-west-1",
+      "description": "AWS spot VM for testing"
+    },
+    {
+      "api_key": "APIB...",
+      "region": "us-east-1"
+    }
+  ],
+  "azure": [
+    {
+      "client_id": "abc...", "tenant_id": "xyz...",
+      "description": "Azure spot VM for testing"
+    }
+  ]
+}
