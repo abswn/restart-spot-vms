@@ -2,8 +2,6 @@ import os
 from loguru import logger
 from google.cloud import compute_v1
 
-CREDENTIALS_DIR = "credentials"
-
 def start_vm(project_id: str, zone: str, instance_name: str, credentials_file: str) -> bool:
     """
     Start a VM instance.
@@ -17,7 +15,7 @@ def start_vm(project_id: str, zone: str, instance_name: str, credentials_file: s
     Returns:
         bool: True if the VM instance was started successfully, False otherwise.
     """
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(CREDENTIALS_DIR, credentials_file)
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_file
     instance_client = compute_v1.InstancesClient()
     try:
         logger.info (f"Starting VM: {instance_name} in {zone}...")
@@ -49,7 +47,7 @@ def is_vm_terminated(project_id: str, zone: str, instance_name: str, credentials
     Note:
         Returns False if there's an error checking the VM status.
     """
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(CREDENTIALS_DIR, credentials_file)
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_file
     instance_client = compute_v1.InstancesClient()
     try:
         request = compute_v1.GetInstanceRequest(

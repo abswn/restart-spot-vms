@@ -1,8 +1,11 @@
 import time
+import os
 import json
 from typing import Dict, List
 from loguru import logger
 import gcp
+
+CREDENTIALS_DIR = "credentials"
 
 def load_vms(json_file: str) -> Dict[str, List[dict]]:
     """
@@ -46,10 +49,15 @@ def main():
             project_id = vm.get("project_id")
             zone = vm.get("zone")
             instance_name = vm.get("instance_name")
-            credentials_file = vm.get("credentials_file")
+            credentials_file_name = vm.get("credentials_file")
 
-            if not project_id or not zone or not instance_name or not credentials_file:
+            if not project_id or not zone or not instance_name or not credentials_file_name:
                 logger.error(f"Missing VM configuration: {vm}")
+                continue
+            
+            credentials_file = os.path.join(CREDENTIALS_DIR, credentials_file_name)
+            if not os.path.exists(credentials_file):
+                logger.error(f"Credentials file {credentials_file} for GCP VM {instance_name} not found.")
                 continue
 
             if gcp.is_vm_terminated(project_id, zone, instance_name, credentials_file):
