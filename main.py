@@ -4,8 +4,10 @@ import json
 from typing import Dict, List
 from loguru import logger
 import gcp
+import azure
 
 CREDENTIALS_DIR = "credentials"
+SLEEP_DURATION = 300 # 5 minutes
 
 def load_vms(json_file: str) -> Dict[str, List[dict]]:
     """
@@ -70,18 +72,36 @@ def main():
             else:
                 logger.info(f"GCP VM {instance_name} is already running.")
 
-        # AWS VMs
-        # Add AWS VM monitoring logic here
-
         # Azure VMs
-        # Add Azure VM monitoring logic here
+        for vm in vms.get("azure", []):
+            resource_group = vm.get("resource_group")
+            instance_name = vm.get("instance_name")
+            credentials_file_name = vm.get("credentials_file")
 
-        # Add any other cloud provider monitoring logic here
+            if not resource_group or not instance_name or not credentials_file_name:
+                logger.error(f"Missing VM configuration: {vm}")
+                continue
+            
+            credentials_file = os.path.join(CREDENTIALS_DIR, credentials_file_name)
+            if not os.path.exists(credentials_file):
+                logger.error(f"Credentials file {credentials_file} for Azure VM {instance_name} not found.")
+                continue
+
+            if azure.is_vm_terminated(resource_group, instance_name, credentials_file):
+                logger.info(f"Azure VM {instance_name} is terminated. Starting it in 10 seconds...")
+                time.sleep(10) # Wait for 10 seconds before starting the VM
+                if azure.start_vm(resource_group, instance_name, credentials_file):
+                    logger.info(f"Azure VM {instance_name} started successfully.")
+                else:
+                    logger.error(f"Failed to start VM {instance_name}.")
+            else:
+                logger.info(f"Azure VM {instance_name} is either already running or manually stopped.")
+
+        # TODO: Add AWS logic here
 
         # Sleep for a while before checking again
-        sleep_time = 300  # Check every 5 minutes
-        logger.info(f"Sleeping for {sleep_time} seconds before next check...")
-        time.sleep(sleep_time)
+        logger.info(f"Sleeping for {SLEEP_DURATION} seconds before next check...")
+        time.sleep(SLEEP_DURATION)
 
 if __name__ == "__main__":
     main()

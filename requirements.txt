@@ -1,2 +1,4 @@
-google-cloud-compute
 loguru
+google-cloud-compute
+azure-identity
+azure-mgmt-compute
