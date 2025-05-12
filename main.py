@@ -3,8 +3,7 @@ import os
 import json
 from typing import Dict, List
 from loguru import logger
-import gcp
-import azure
+from cloud_handlers import gcp_handler, azure_handler
 
 CREDENTIALS_DIR = "credentials"
 SLEEP_DURATION = 300 # 5 minutes
@@ -62,10 +61,10 @@ def main():
                 logger.error(f"Credentials file {credentials_file} for GCP VM {instance_name} not found.")
                 continue
 
-            if gcp.is_vm_terminated(project_id, zone, instance_name, credentials_file):
+            if gcp_handler.is_vm_terminated(project_id, zone, instance_name, credentials_file):
                 logger.info(f"GCP VM {instance_name} is terminated. Starting it in 10 seconds...")
                 time.sleep(10)  # Wait for 10 seconds before starting the VM
-                if gcp.start_vm(project_id, zone, instance_name, credentials_file):
+                if gcp_handler.start_vm(project_id, zone, instance_name, credentials_file):
                     logger.info(f"GCP VM {instance_name} started successfully.")
                 else:
                     logger.error(f"Failed to start VM {instance_name}.")
@@ -87,10 +86,10 @@ def main():
                 logger.error(f"Credentials file {credentials_file} for Azure VM {instance_name} not found.")
                 continue
 
-            if azure.is_vm_terminated(resource_group, instance_name, credentials_file):
+            if azure_handler.is_vm_terminated(resource_group, instance_name, credentials_file):
                 logger.info(f"Azure VM {instance_name} is terminated. Starting it in 10 seconds...")
                 time.sleep(10) # Wait for 10 seconds before starting the VM
-                if azure.start_vm(resource_group, instance_name, credentials_file):
+                if azure_handler.start_vm(resource_group, instance_name, credentials_file):
                     logger.info(f"Azure VM {instance_name} started successfully.")
                 else:
                     logger.error(f"Failed to start VM {instance_name}.")
