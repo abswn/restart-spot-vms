@@ -11,7 +11,7 @@
   "azure": [
     {
       "resource_group": "your-resource-group-name",
-      "vm_name": "your-vm-name",
+      "instance_name": "your-vm-name",
       "credentials_file": "azure_credentials.json",
       "description": "Azure spot VM for testing"
     }
