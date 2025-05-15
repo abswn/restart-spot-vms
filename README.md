@@ -60,7 +60,7 @@ If you want to manage VMs across multiple GCP projects, you can either:
 3. **Create a client secret**  
    - In app registration, go to **Certificates & secrets**.
    - Click **New client secret**, add a description, and set an expiry.
-   - Copy the generated value (you won't see it again).
+   - Copy the generated value - client secret value, not client secret ID (you won't see it again).
 
 4. **Get tenant and client IDs**  
    - In app registration, copy the **Application (client) ID** and **Directory (tenant) ID**.
