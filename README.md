@@ -1,6 +1,6 @@
 # restart-spot-vms
 
-An automation tool to restart stopped (deallocated) spot VMs across multiple cloud providers (AWS, Azure, GCP). Currently, it supports only **GCP** spot VMs.
+An automation tool to restart stopped (deallocated) spot VMs across multiple cloud providers (AWS, Azure, GCP). Currently, it supports only **GCP** and **Azure** spot VMs.
 
 ## GCP Setup: Creating a Service Account
 
